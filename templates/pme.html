@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Form</title>
+</head>
+<body>
+    <h2>Disease Probability Prediction</h2>
+    <form id="predictionForm">
+        <div><label for="var1">Var 1:</label><input type="number" id="var1" name="var1" required></div>
+        <div><label for="var2">Var 2:</label><input type="number" id="var2" name="var2" required></div>
+        <div><label for="var3">Var 3:</label><input type="number" id="var3" name="var3" required></div>
+        <div><label for="var4">Var 4:</label><input type="number" id="var4" name="var4" required></div>
+        <div><label for="var5">Var 5:</label><input type="number" id="var5" name="var5" required></div>
+        <div><label for="var6">Var 6:</label><input type="number" id="var6" name="var6" required></div>
+        <div><label for="var7">Var 7:</label><input type="number" id="var7" name="var7" required></div>
+        <div><label for="var8">Var 8:</label><input type="number" id="var8" name="var8" required></div>
+        <div><label for="var9">Var 9:</label><input type="number" id="var9" name="var9" required></div>
+        <div><label for="var10">Var 10:</label><input type="number" id="var10" name="var10" required></div>
+        <div><label for="var11">Var 11:</label><input type="number" id="var11" name="var11" required></div>
+        <button type="button" onclick="predict()">Predict</button>
+    </form>
+    <div id="result">Predicted Probability will be shown here.</div>
+
+    <script>
+        function predict() {
+            var formData = {};
+            for (let i = 1; i <= 11; i++) {
+                formData['var' + i] = parseFloat(document.getElementById('var' + i).value);
+            }
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = 'Predicted Probability: ' + data.probability;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

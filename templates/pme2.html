@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Machine Learning Model for Predicting Renal Damage in Children with IgA Vasculitis</title>
+
+<style>
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding-top: 20px;
+    }
+    .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .input-field {
+        flex-basis: calc(30% - 10px);
+        margin-right: 10px;
+    }
+    .input-field:last-child {
+        margin-right: 0;
+    }
+    /* Ensure that the last row's items align to the start (left) */
+    .row:last-child .input-field {
+        flex-basis: calc(33.333% - 10px);
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+    }
+    .output {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f1f1f1;
+    }
+</style>
+
+   <script>
+        function predict() {
+            var formData = {};
+            for (let i = 1; i <= 11; i++) {
+                formData['var' + i] = parseFloat(document.getElementById('var' + i).value);
+            }
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = 'Predicted Probability: ' + data.probability;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>A Machine Learning Model for Predicting Renal Damage in Children with IgA Vasculitis</h1>
+    <form id="predictionForm">
+        <div class="row">
+            <div class="input-field"><label>Age(years):</label><input type="number" id="var1" step="0.1"></div>
+            <div class="input-field"><label>D-dimer(mg/L):</label><input type="number" id="var9" step="0.01"></div>
+            <div class="input-field"><label>IgE(IU/ml):</label><input type="number" id="var10" step="0.1"></div>
+            <div class="input-field"><label>ASO(IU/ml):</label><input type="number" id="var11" step="0.1"></div>
+        </div>
+        <div class="row">
+            <div class="input-field"><label>Recurrence of rash ≥3 times(0=No,1=Yes):</label><input type="number" id="var2" min="0" max="1" step="1"></div>
+            <div class="input-field"><label>Absolute eosinophil count(10^9/L):</label><input type="number" id="var6" step="0.01"></div>
+            <div class="input-field"><label>CRP(mg/L):</label><input type="number" id="var7" step="0.01"></div>
+            <div class="input-field"><label>PT(S):</label><input type="number" id="var8" step="0.1"></div>
+        </div>
+        <div class="row">
+            <div class="input-field"><label>Whether anticoagulant therapy was administered(0=No,1=Yes):</label><input type="number" id="var5" min="0" max="1" step="1"></div>
+            <div class="input-field"><label>Whether antihistamine therapy was administered(0=No,1=Yes):</label><input type="number" id="var4" min="0" max="1" step="1"></div>
+            <div class="input-field"><label>Whether corticosteroids  therapy was administered(0=No,1=Yes):</label><input type="number" id="var3" min="0" max="1" step="1"></div>
+        </div>
+        <button class="submit-btn" type="button" onclick="predict()">Predict</button>
+    </form>
+    <div id="result" class="output">Disease Probability will be shown here.</div>
+</div>
+
+</body>
+</html>
