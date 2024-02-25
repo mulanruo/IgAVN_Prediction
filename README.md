@@ -5,3 +5,4 @@ Steps:
 1. Run web_pme.py
 2. Open your browser with 127.0.0.1/5000
 3. You can input 11 variables in the webpage and our model will give you the predicted probability.
+<img width="960" alt="web_predict" src="https://github.com/mulanruo/IgAVN_Prediction/assets/45778373/64466575-ae50-454b-a412-097b168e0ea1">
